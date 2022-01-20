@@ -4,13 +4,13 @@ from scipy.fftpack import fft, ifft
 import numpy as np
 import math
 
-Audio_file = 'Adele - Set Fire to the Rain'
+Audio_file = 'test30'
 plots = True
 channel = 1             # for stereo songs we have two channels, choose one.
 
 # Messing around - setting stuff to 0
 cutoff_left = 0         # Hz - setting frequencies between cutoff_left and cutoff_right to 0
-cutoff_right = 0        # Hz
+cutoff_right = 10000        # Hz
 threshold_cut = 0       # Setting all frequencies with a lower value than threshold_cut times max to 0
 padding_offset = 0      # pad the signal with 0, front and back
 
@@ -44,7 +44,7 @@ def getSpectum(Audio_file):
 
             plt.title("Spectrum of "+Audio_file)
             plt.plot(frqLabel[:(fft_out.size//2)], np.abs(fft_out[:(fft_out.size//2)]))
-            plt.savefig('resuts/Spectrum_'+Audio_file)
+            plt.savefig('results/Spectrum_'+Audio_file)
             plt.show()
         
         return [fft_out, rate]
@@ -81,7 +81,7 @@ def getSpectum(Audio_file):
 # save back as an wav file
 fft_out,rate =  getSpectum(Audio_file)
 sound_back = np.abs(ifft(fft_out))
-wav.write('resuts/output_'+Audio_file+'.wav', rate, np.int16(sound_back* 32767 / sound_back.max()))
+wav.write('results/output_'+Audio_file+'.wav', rate, np.int16(sound_back* 32767 / sound_back.max()))
 if (plots):
     show_duration = sound_back.shape[0]
     plt.title("Back formation of audio file")

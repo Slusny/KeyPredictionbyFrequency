@@ -25,13 +25,13 @@ def get_closest_split(n, close_to=9000):
             return val
 
 def bin_spectrum(spectrum,rate):
-    bin_size = math.ceil(5 * spectrum.size / rate*2)
+    bin_size = math.ceil(5 * spectrum.size / rate)
     values_per_bin = math.ceil(spectrum.size / bin_size)
     padded_spectrum = np.pad(spectrum,(0,bin_size*values_per_bin-spectrum.size))
     binned_spectrum = np.mean(padded_spectrum.reshape(-1, bin_size), axis=1)
 
-    x = np.arange(0,5*binned_spectrum.size,5)
-    plt.plot( x,binned_spectrum)
+    x = np.arange(0,5*binned_spectrum.size//2 -2,5)
+    plt.plot( x,np.abs(binned_spectrum[:(binned_spectrum.size//2)]))
     plt.show()
     sound_back = np.abs(ifft(binned_spectrum))
     wav.write('results/output_'+"out"+'.wav', rate, np.int16(sound_back* 32767 / sound_back.max()))
@@ -83,7 +83,7 @@ def getSpectum(spotify_url,output,Song_name):
             # #plt.savefig('resuts/Spectrum_'+Song_name)
             plt.show()
         
-        return [np.abs(fft_out[:(fft_out.size//2)]), rate]
+        return [fft_out, rate]
     else:
 
         print('rate :',rate)
@@ -111,18 +111,18 @@ def getSpectum(spotify_url,output,Song_name):
             # # plt.savefig('Spectrum_'+Song_name)
             # plt.show()
         
-        return [np.abs(fft_out[:(fft_out.size//2)]), rate]
+        return [fft_out, rate]
 
 
-# # save back as an wav file
-# fft_out,rate =  getSpectum(Song_name)
-# sound_back = np.abs(ifft(fft_out))
-# wav.write('results/output_'+Song_name+'.wav', rate, np.int16(sound_back* 32767 / sound_back.max()))
-# if (plots):
-#     show_duration = sound_back.shape[0]
-#     plt.title("Back formation of audio file")
-#     plt.plot(np.arange(show_duration),sound_back[0:show_duration])
-#     plt.show()
+# save back as an wav file
+fft_out,rate =  getSpectum("https://open.spotify.com/track/4aWmUDTfIPGksMNLV2rQP2", "data/temp", "some Song")
+sound_back = np.abs(ifft(fft_out))
+wav.write('results/output_'+'working'+'.wav', rate, np.int16(sound_back* 32767 / sound_back.max()))
+if (plots):
+    show_duration = sound_back.shape[0]
+    plt.title("Back formation of audio file")
+    plt.plot(np.arange(show_duration),sound_back[0:show_duration])
+    plt.show()
 
 # spectrum, rate = getSpectum("https://open.spotify.com/track/4aWmUDTfIPGksMNLV2rQP2", "data/temp", "some Song")
 # bin_spectrum(spectrum,rate)
