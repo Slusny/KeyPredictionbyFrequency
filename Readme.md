@@ -6,7 +6,7 @@ https://github.com/spotDL/spotify-downloader
 
 ### 2. Search song on spotify or use url in database
 We need the track url :
-https://open.spotify.com/album/417HhG8JiXnGEop7CRC30M?highlight=spotify:track:**0dQZmVKzYF3F9W64ESs8h4**
+https://open.spotify.com/album/417HhG8JiXnGEop7CRC30M?highlight=spotify:track:0dQZmVKzYF3F9W64ESs8h4
 
 ### 3. Download song like:
 spotdl https://open.spotify.com/track/0dQZmVKzYF3F9W64ESs8h4 --output-format wav
