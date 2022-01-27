@@ -1,3 +1,4 @@
 results/
 data/
 src/credentials.py
+__pycache__/
