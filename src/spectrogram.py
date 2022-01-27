@@ -5,7 +5,6 @@ import ntpath
 
 from numpy.lib import stride_tricks
 from matplotlib import pyplot as plt
-import matplotlib.cm as cm
 
 print('''How it works?
       first arg : path to wav-file

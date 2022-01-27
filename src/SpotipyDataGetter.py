@@ -1,6 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-import credentials
+from . import credentials
 import pandas as pd
 import urllib.request
 import os

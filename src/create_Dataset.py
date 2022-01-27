@@ -1,6 +1,6 @@
 import pandas as pd
-import numpy as np
-from fourier_analysis import getSpectum 
+from .fourier_analysis import getSpectum
+
 
 df = pd.read_csv("./data/charts.csv.zip")
 

@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile as wav
 from scipy.fftpack import fft, ifft
 import numpy as np
-import math
 
 Audio_file = 'test30'
 plots = True

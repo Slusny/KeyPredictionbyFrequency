@@ -2,7 +2,7 @@ from scipy.fftpack import fft, ifft
 from scipy.io import wavfile as wav
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.io.wavfile import write
+
 
 # To create sample audio files and see effects of a fourier transform
 
