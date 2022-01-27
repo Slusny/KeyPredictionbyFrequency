@@ -2,3 +2,4 @@ results/
 data/
 src/credentials.py
 __pycache__/
+exp/.ipynb_checkpoints/
