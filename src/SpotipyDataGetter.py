@@ -8,6 +8,10 @@ import os
 import time
 
 
+RETRY_TIME = 5
+NUM_RETRIES = 3
+
+
 def chunks(lst, n):
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
@@ -41,9 +45,9 @@ class SpotipyDataGetter():
             while True:
                 try:
                     tracks = self.spotify.tracks(tracks=url_chunk)
-                except SpotifyException():
-                    print(f'Could not retrieve clip URL for chunk {i}. Waiting for 30s...')
-                    time.sleep(30)
+                except Exception as e:
+                    print(f'Could not retrieve clip URL for chunk {i}. Retrying in {RETRY_TIME}s...')
+                    time.sleep(RETRY_TIME)
                     continue
                 break
 
@@ -78,12 +82,13 @@ class SpotipyDataGetter():
             while True:
                 try:
                     audio_features = self.spotify.audio_features(tracks=url_chunk)
-                except SpotifyException():
-                    print(f'Could not retrieve audio features for chunk {i}. Waiting for 30s...')
-                    time.sleep(30)
+                except Exception as e:
+                    print(f'Could not retrieve audio features for chunk {i}. Retrying in {RETRY_TIME}s...')
+                    time.sleep(RETRY_TIME)
                     continue
                 break
-            df = pd.DataFrame(audio_features)
+
+            df = pd.DataFrame([{} if el is None else el for el in audio_features])
             df.insert(0, 'URL', url_chunk)
             df_list.append(df)
         return pd.concat(df_list, ignore_index=True)
@@ -103,15 +108,22 @@ class SpotipyDataGetter():
         analysis_list = []
         for i, url in enumerate(url_list):
             print(f'Audio analysis: {i}')
+            tries = 1
             while True:
                 try:
                     audio_ana = self.spotify.audio_analysis(track_id=url)
-                except SpotifyException():
-                    print(f'Could not retrieve audio analysis for song {url}. Waiting for 30s...')
-                    time.sleep(30)
-                    continue
+                except Exception as e:
+                    if tries <= NUM_RETRIES:
+                        print(f'Could not retrieve audio analysis for song {url}. Retrying in {RETRY_TIME}s...')
+                        time.sleep(RETRY_TIME)
+                        tries = tries + 1
+                        continue
+                    else:
+                        print(f'Max retries reached for {url}. Skipping...')
+                        audio_ana = {'track': dict()}
                 break
-            analysis_list.append(audio_ana['track'])
+            if audio_ana is not None:
+                analysis_list.append(audio_ana['track'])
         df = pd.DataFrame(analysis_list)[features]
         df.insert(0, 'URL', url_list)
         return df
@@ -129,9 +141,9 @@ class SpotipyDataGetter():
         '''
         print('Getting full dataset:')
         os.makedirs(target_folder, exist_ok=True)
-        df_ana = self.get_audio_analysis(url_list)
-        df_feat = self.get_audio_features(url_list)
         df_clips = self.download_clips(url_list, target_folder)
+        df_feat = self.get_audio_features(url_list)
+        df_ana = self.get_audio_analysis(url_list)
         cols_to_delete = df_feat.columns[df_feat.columns.isin(df_ana.columns)]
         cols_to_delete = cols_to_delete[cols_to_delete != 'URL']
         df_feat = df_feat.drop(columns=cols_to_delete)  # features from the analysis endpoint are preferred
@@ -152,10 +164,10 @@ class SpotipyDataGetter():
         print('Getting tracks...')
         ls = []
         results = self.spotify.playlist_items(playlist_url, fields='next,items.track.external_urls.spotify', limit=50)
-        ls.extend([el['track']['external_urls']['spotify'] for el in results['items']])
+        ls.extend([el['track']['external_urls']['spotify'] for el in results['items'] if 'spotify' in el['track']['external_urls']])
         while results['next']:
             results = self.spotify.next(results)
-            ls.extend([el['track']['external_urls']['spotify'] for el in results['items']])
+            ls.extend([el['track']['external_urls']['spotify'] for el in results['items'] if 'spotify' in el['track']['external_urls']])
 
         ls = list(filter(lambda x: x is not None, ls))
         return ls
@@ -184,7 +196,12 @@ if __name__ == '__main__':
 
     #dataset = sd.get_full_dataset(url_list, 'data')
     #print(dataset.info())
-
+    
+    
+    dl_more_piano = 'https://open.spotify.com/playlist/2J1TAsLuUuwH0iqjlw3OVj'
+    dl_acoustic_popular = 'https://open.spotify.com/playlist/4sKM3N7Vxz8mgL9gI8UpiE'
+    huge_playlist_url = 'https://open.spotify.com/playlist/3tIEIgEUkSbFiPasg8ziem'
     piano_playlist_url = 'https://open.spotify.com/playlist/4XJoQM1WZeJWqpV7iKszHM'
     test_url = 'https://open.spotify.com/playlist/4295JDoKFcnzqjwnyFSUgW'
-    val = sd.get_dataset_from_playlist(piano_playlist_url, '../data/piano')
+    mozart_url = 'https://open.spotify.com/playlist/2oITphBjrWk7YxMITPYLuE'
+    val = sd.get_dataset_from_playlist(dl_more_piano, '../data/dl_more_piano')

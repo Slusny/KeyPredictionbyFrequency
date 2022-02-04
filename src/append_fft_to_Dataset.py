@@ -5,8 +5,8 @@ from src.fourier_analysis import getSpectum
 from pathlib import Path
 import matplotlib.pyplot as plt
 
-target_folder = 'data/piano'
-piano_2000_path  = 'data/piano_2000'
+target_folder = 'data/dl_more_piano_4000'
+piano_2000_path  = 'data/dl_more_piano_4000'
 file_name = 'dataset_abs.csv'
 
 
@@ -37,7 +37,7 @@ def create_new_dataset():
     spectrum_df = pd.DataFrame.from_dict(dict(zip(spectrum_series.index, spectrum_series.values)), orient='index')
     spectrum_df.columns = frqLabel
     spectrum_df = spectrum_df.apply(np.abs)
-    joined_df = df.join(spectrum_df).reset_index(drop=True)
+    joined_df = df.join(spectrum_df, how='inner').reset_index(drop=True)
     print(joined_df.info())
     print(f'Saving dataframe to {os.path.join(target_folder, file_name)}')
     joined_df.to_csv(os.path.join(target_folder, file_name))
