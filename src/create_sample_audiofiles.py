@@ -51,9 +51,11 @@ sound_back_2 = np.real(ifft(complex_fft_values2))
 if(plot):
     fig, axarr = plt.subplots(nrows=2, ncols=3, figsize=(16,9))
     cols = ['sound wave','frequency spectrum', 'reconstructed soundwave']
+    xlabel= ['seconds','Hz','seconds']
     rows = ['superposition of frequencies','concatenated frequencies']
     for ax, col in zip(axarr[0], cols):
         ax.set_title(col,  size='large')
+        ax.set_xlabel(xlabel,  size='large')
     for ax, row in zip(axarr[:,0], rows):
         ax.set_ylabel(row ,size='large')    
 
