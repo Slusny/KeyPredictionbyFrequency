@@ -19,7 +19,7 @@ By default, this will download the larger dataset used for classification.
 To get the dataset for PCA, change the last line in the script to the following:
 val = sd.get_dataset_from_playlist(piano_playlist_url, '../data/piano')
 
-3. To convert the .mp3 files to .WAV, install ffmpeg: https://ffmpeg.org/
+3. To convert the .mp3 files to .WAV, install ffmpeg: https://ffmpeg.org/.
 Adjust the bash script ./mp3_to_wav.sh with the sampling rate you want by changing the -ar option in the ffmpeg call. Should be 4000 for classification or 2000 for PCA.
 Then, run mp3_to_wav.sh and provide the folder where you downloaded the mp3 clips as argument (e.g. 'data/piano' for PCA or 'data/dl_more_piano' for classification).
 
