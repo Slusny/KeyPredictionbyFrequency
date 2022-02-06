@@ -65,7 +65,7 @@ if(plot):
     axarr[1,2].plot(xa, sound_back_2)
     
     plt.tight_layout()
-    plt.savefig(output_foulder + '/concatenated_vs_mixed_frequencies.png')
+    plt.savefig(output_foulder + '/concatenated_vs_mixed_frequencies.pdf')
     print("saved figure")
 else:
     wav.write(output_foulder + '/example_mixed.wav', rate , np.int16((composite_signal1 / composite_signal1.max())* 32767 ))
