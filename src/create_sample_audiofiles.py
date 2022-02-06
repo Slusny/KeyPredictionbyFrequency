@@ -55,9 +55,10 @@ if(plot):
     rows = ['superposition of frequencies','concatenated frequencies']
     for ax, col in zip(axarr[0], cols):
         ax.set_title(col,  size='large')
-        ax.set_xlabel(xlabel,  size='large')
     for ax, row in zip(axarr[:,0], rows):
-        ax.set_ylabel(row ,size='large')    
+        ax.set_ylabel(row ,size='large')  
+    for i,ax in enumerate(axarr[1]):
+        ax.set_xlabel(xlabel[i],  size='large')  
 
     axarr[0,0].plot(xa, composite_signal1)
     axarr[0,1].plot(f_values1[0:160], fft_values1[0:160])
