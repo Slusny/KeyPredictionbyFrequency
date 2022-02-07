@@ -197,11 +197,6 @@ if __name__ == '__main__':
     #dataset = sd.get_full_dataset(url_list, 'data')
     #print(dataset.info())
     
-    
     dl_more_piano = 'https://open.spotify.com/playlist/2J1TAsLuUuwH0iqjlw3OVj'
-    dl_acoustic_popular = 'https://open.spotify.com/playlist/4sKM3N7Vxz8mgL9gI8UpiE'
-    huge_playlist_url = 'https://open.spotify.com/playlist/3tIEIgEUkSbFiPasg8ziem'
     piano_playlist_url = 'https://open.spotify.com/playlist/4XJoQM1WZeJWqpV7iKszHM'
-    test_url = 'https://open.spotify.com/playlist/4295JDoKFcnzqjwnyFSUgW'
-    mozart_url = 'https://open.spotify.com/playlist/2oITphBjrWk7YxMITPYLuE'
     val = sd.get_dataset_from_playlist(dl_more_piano, '../data/dl_more_piano')
