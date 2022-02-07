@@ -49,16 +49,17 @@ sound_back_1 = np.real(ifft(complex_fft_values1))
 sound_back_2 = np.real(ifft(complex_fft_values2))
 
 if(plot):
-    fig, axarr = plt.subplots(nrows=2, ncols=3, figsize=(16,9))
+    fsize=30
+    fig, axarr = plt.subplots(nrows=2, ncols=3, figsize=(20,9))
     cols = ['sound wave','frequency spectrum', 'reconstructed soundwave']
     xlabel= ['seconds','Hz','seconds']
-    rows = ['superposition of frequencies','concatenated frequencies']
+    rows = ['superposition \nof frequencies','concatenated \nfrequencies']
     for ax, col in zip(axarr[0], cols):
-        ax.set_title(col,  size='large')
+        ax.set_title(col,  size=fsize)
     for ax, row in zip(axarr[:,0], rows):
-        ax.set_ylabel(row ,size='large')  
+        ax.set_ylabel(row ,size=fsize)  
     for i,ax in enumerate(axarr[1]):
-        ax.set_xlabel(xlabel[i],  size='large')  
+        ax.set_xlabel(xlabel[i],  size=fsize)  
 
     axarr[0,0].plot(xa, composite_signal1)
     axarr[0,1].plot(f_values1[0:160], fft_values1[0:160])
@@ -66,8 +67,27 @@ if(plot):
     axarr[1,0].plot(xa, composite_signal2)
     axarr[1,1].plot(f_values2[0:160], fft_values2[0:160])
     axarr[1,2].plot(xa, sound_back_2)
-    
-    plt.tight_layout()
+
+    # ax1.tick_params(axis='y', labelsize=fsize)
+    # ax2.tick_params(axis='y', labelsize=fsize)
+    # ax1.yaxis.offsetText.set_fontsize(fsize)
+    # ax2.yaxis.offsetText.set_fontsize(fsize)
+
+    plt.rcParams.update({'font.size': 55})
+    for axx in axarr:
+        for ax in axx:
+            ax.set_yticks([])
+            # ax.tick_params(axis='y', labelsize=fsize)
+            ax.tick_params(axis='x', labelsize=fsize)
+
+    # plt.subplots_adjust(wspace=0.07)
+    plt.subplots_adjust(left=0.05,
+                    bottom=0.15, 
+                    right=0.98, 
+                    top=0.95, 
+                    wspace=0.07)
+    # plt.show()
+    # plt.tight_layout()
     plt.savefig(output_foulder + '/concatenated_vs_mixed_frequencies.pdf')
     print("saved figure")
 else:
