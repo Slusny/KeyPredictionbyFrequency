@@ -9,19 +9,19 @@ In our project, we set out to predict the musical key of piano records based on 
 1. Create an "app" on the Spotify Developer platform
 https://developer.spotify.com/
 
-2. In the src folder, create a credentials.py file with your app's login credentials:
-client_id =[your id]
-client_secret = [your secret]
-redirect_uri = 'http://localhost/'
+2. In the src folder, create a credentials.py file with your app's login credentials:  
+client_id =[your id]  
+client_secret = [your secret]  
+redirect_uri = 'http://localhost/'  
 
-3. Run the src/SpotifyDataGetter.py script to collect the data. 
+3. Run the src/SpotipyDataGetter.py script to collect the data. For this, you will need to install Spotipy (https://spotipy.readthedocs.io/en/2.19.0/) which interfaces with the Spotify API.  
 By default, this will download the larger dataset used for classification.
-To get the dataset for PCA, change the last line in the script to the following:
+To get the dataset for PCA, change the last line in the script to the following:  
 val = sd.get_dataset_from_playlist(piano_playlist_url, '../data/piano')
 
 3. To convert the .mp3 files to .WAV, install ffmpeg: https://ffmpeg.org/.
-Adjust the bash script ./mp3_to_wav.sh with the sampling rate you want by changing the -ar option in the ffmpeg call. Should be 4000 for classification or 2000 for PCA.
-Then, run mp3_to_wav.sh and provide the folder where you downloaded the mp3 clips as argument (e.g. 'data/piano' for PCA or 'data/dl_more_piano' for classification).
+Execute bash script ./mp3_to_wav.sh with the first argument beeing the path to the directory which mp3 files should be converted. The second argument is the desired sample rate. It should be 4000 for classification or 2000 for PCA.
+The folder where you downloaded the mp3 clips should be 'data/piano' for PCA or 'data/dl_more_piano' for classification.
 
 4. Run src/append_fft_to_Dataset.py to perform FFT on the audio clips. The resulting dataframe with frequency components will be saved to the folder specified in the script.
 
