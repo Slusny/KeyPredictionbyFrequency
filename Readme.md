@@ -27,6 +27,8 @@ The folder where you downloaded the mp3 clips should be 'data/piano' for PCA or 
 
 ### PCA
 
+![alt text](https://github.com/lennytubby/KeyPredictionbyFrequency/blob/master/figures/PCA_of_F%C3%BCr_Elise.gif)
+
 Run src/PCA.py. The arguments needed are explained in the script / the argparser.
 Note that computing PCA requires at least around 16GB of RAM already for the smaller dataset with a sampling rate of 2000Hz, and more for larger datasets or higher sampling rates.
 
